@@ -20,7 +20,7 @@ def input_students
   puts "To finish, just hit return twice"
 # create an empty array
 #get the first name
-name = gets.chomp
+name = STDIN.gets.chomp
 #while the name is not empty, repeat this code
 while !name.empty? do
   #add the student hash to the array
@@ -36,7 +36,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -44,7 +44,7 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "4. Load the students"
   puts "9. Exit"
 end
 
@@ -83,7 +83,7 @@ def save_students
   file.close
 end
 
-def load_students
+def load_students(filename = "students.csv")
   file = File.open("students.csv", "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
@@ -91,6 +91,21 @@ def load_students
   end
   file.close
 end
+
+def try_load_students
+  filename = ARGV.first #from commandline
+  return if filename.nil? #from method
+  if file.exists?(filename) #if exists
+    load_students(filename)
+    puts "Loaded #{students.count} from #{filename}"
+  else #if doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
+
+
+
 
 
 interactive_menu
